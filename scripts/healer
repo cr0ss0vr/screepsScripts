@@ -1,0 +1,21 @@
+module.exports = function (creep) {
+    var target = creep.pos.findClosest(FIND_MY_CREEPS, {
+        filter: function(object) {
+            return object.hits < object.hitsMax;
+        }
+    });
+    if(creep.hits < creep.hitsMax){
+        creep.heal(creep);
+    }else if(target) {
+        creep.moveTo(target);
+        if(creep.pos.isNearTo(target)) {
+            creep.heal(target);
+        }
+        else {
+            creep.rangedHeal(target);
+        }
+	}else{
+	    target = creep.pos.findClosest(FIND_MY_SPAWNS);
+	    creep.moveTo(target.pos.x-4,target.pos.y-1);
+	}
+}

@@ -1,0 +1,12 @@
+module.exports = function (creep) {
+    var target = creep.pos.findClosest(FIND_HOSTILE_CREEPS, {
+        filter: { owner: { username: 'Invader' } }
+    });
+	if(target) {
+		creep.moveTo(target);
+		creep.attack(target);
+	}else{
+	    target = creep.pos.findClosest(FIND_MY_SPAWNS);
+	    creep.moveTo(target.pos.x-4,target.pos.y-1);
+	}
+}

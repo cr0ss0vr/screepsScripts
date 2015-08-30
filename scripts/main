@@ -1,0 +1,75 @@
+var harvester = require('harvester');
+var builder = require('builder');
+var guard = require('guard');
+var healer = require('healer');
+
+var Spawner = Game.spawns.Spawn1;
+var harvesters = 0;
+var builders = 0;
+var guards = 0; 
+var healers = 0;
+
+for(var i in Memory.creeps) {
+    if(!Game.creeps[i]) {
+        delete Memory.creeps[i];
+    }
+}
+
+for(var name in Game.creeps) {
+	var creep = Game.creeps[name];
+
+	if(creep.memory.role == 'harvester') {
+		harvester(creep);
+		harvesters++;
+	}
+
+	if(creep.memory.role == 'builder') {
+        builder(creep);
+        builders++;
+	}
+	
+	if(creep.memory.role == 'guard') {
+        guard(creep);
+        guards++;
+    }
+    
+    if(creep.memory.role == 'healer'){
+        healer(creep);
+        healers++;
+    }
+    if(creep.memory.role==undefined){
+        creep.suicide();
+    }
+}
+
+
+if(harvesters < 3){
+    if(Spawner.energy >= 200){
+        Spawner.createCreep([WORK, CARRY, MOVE], null, {role: 'harvester'});
+    }
+}
+
+if(guards < 3){
+    if(Spawner.energy >= 140){
+        Spawner.createCreep([ATTACK, TOUGH, MOVE], null, {role: 'guard'});
+    }
+}
+
+if(healers < 1){
+    if(Spawner.energy >= 300){
+        Spawner.createCreep([HEAL, MOVE], null, {role: 'healer'});
+    }
+}
+if(builders < 2){
+    if(Spawner.energy >= 200){
+        Spawner.createCreep([WORK, CARRY, MOVE], null, {role: 'builder'});
+    }
+}
+/*
+console.log(harvesters+" harvesters");
+console.log(guards+" guards");
+console.log(healers+" healers");
+console.log(builders+" builders");
+
+console.log("---------END SUMMARY------");
+*/
